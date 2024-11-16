@@ -11,17 +11,19 @@ Examples:
 This application is an all-in-one platform designed to empower communities by addressing health, finances, and social engagement in an accessible and convenient manner. It features a virtual health assistant powered by advanced AI trained on medical textbooks with the RAGing methodin, financial tools to help users analyze and optimize their budgets, and an AI chatbot for on-demand support. Additionally, the community page connects users with local events and neighbors, fostering collaboration and a sense of belonging.
 
 ## Project Value 💰
-**....at least 3 sentences describing your target customer and tangible benefits from you**
+This application is targeted to low income communities who cannot afford to properly care for their health. We also target people who are unable to take time for self-care due to working extended hours. This app provides a cost effective and accessible solution for this demographic receiving advice pertaining potential health conditions.
 
 ## Tech Overview 💻
-**... what tech was used to bring this project to life?**
-
-Example:
-* FastAPI
-* Hugging Face AI Models
 * Next.js
-* Java
 * ReactJS
+* TypeScript
+* PostGres
+* Neon
+* Vercel
+* PineconeDB
+* Prisma
+* Google OAuth2
+
 
 ### Link to Video Pitch 📹
 **...point us to the short clip that tells us about your solution 😄**
