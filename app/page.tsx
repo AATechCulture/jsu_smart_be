@@ -67,7 +67,7 @@ const pricingPlans = [
     priceId: "price_pro_id",
     features: [
       "Health Assistant",
-      "Financial Advisor",
+      "Financial Advisor" ,
     ],
     popular: true,
   },
