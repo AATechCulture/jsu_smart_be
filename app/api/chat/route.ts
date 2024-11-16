@@ -1,21 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server';
-import OpenAI from 'openai';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 
 // Ensure API key is present and properly formatted
-const OPENAI_API_KEY = process.env.OPENAI_API_KEY?.trim();
-if (!OPENAI_API_KEY) {
-  throw new Error('OPENAI_API_KEY is not configured in environment variables');
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY?.trim();
+if (!GEMINI_API_KEY) {
+  throw new Error('GEMINI_API_KEY is not configured in environment variables');
 }
 
-// Initialize OpenAI client with error handling
-let openai: OpenAI;
+// Initialize Gemini client with error handling
+let genAI: GoogleGenerativeAI;
 try {
-  openai = new OpenAI({
-    apiKey: OPENAI_API_KEY
-  });
+  genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
 } catch (error) {
-  console.error('Error initializing OpenAI client:', error);
-  throw new Error('Failed to initialize OpenAI client');
+  console.error('Error initializing Gemini client:', error);
+  throw new Error('Failed to initialize Gemini client');
 }
 
 // Types for better type safety
@@ -85,36 +83,33 @@ async function handleCommunityChat(message: string) {
     throw new Error('Message is required');
   }
 
-  const response = await openai.chat.completions.create({
-    model: "gpt-3.5-turbo",
-    messages: [
-      {
-        role: "system",
-        content: `You are MoreLife, a friendly community AI assistant focused on helping users discover and engage with community events and activities.
+  try {
+    const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
 
-        Primary Functions:
-        - Share information about upcoming community events
-        - Discuss ongoing community activities and programs
-        - Help users find and join community groups
-        - Provide details about community meetups and workshops
-        - Share information about local initiatives and projects
-        - Guide users to relevant community resources`
-      },
-      {
-        role: "user",
-        content: message.trim()
-      }
-    ],
-    temperature: 0.7,
-    max_tokens: 500,
-  });
+    // Set up the initial context
+    const systemContext = `You are MoreLife, a friendly community AI assistant focused on helping users discover and engage with community events and activities. Your primary functions are:
+    - Share information about upcoming community events
+    - Discuss ongoing community activities and programs
+    - Help users find and join community groups
+    - Provide details about community meetups and workshops
+    - Share information about local initiatives and projects
+    - Guide users to relevant community resources`;
 
-  const reply = response.choices[0]?.message?.content?.trim();
-  if (!reply) {
-    throw new Error('No response received from OpenAI API');
+    // Send both context and user message
+    const result = await model.generateContent(systemContext + "\n\nUser message: " + message.trim());
+    const response = await result.response;
+    const reply = response.text();
+
+    if (!reply) {
+      throw new Error('No response received from Gemini API');
+    }
+
+    return reply;
+
+  } catch (error) {
+    console.error('Gemini API Error:', error);
+    throw new Error('Failed to process chat request');
   }
-
-  return reply;
 }
 
 // Helper function to handle financial advice
@@ -156,89 +151,86 @@ async function handleFinancialAdvice(data: FinancialAdviceRequest) {
     insights.push('You are currently spending more than you earn');
   }
 
-  const prompt = `As a financial advisor, analyze this data and provide 3-4 specific, actionable recommendations:
+  try {
+    const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
+    const prompt = `As a financial advisor, analyze this data and provide 3-4 specific, actionable recommendations:
 
-  Financial Overview:
-  - Total Balance: ${formatCurrency(data.totalBalance)}
-  - Monthly Income: ${formatCurrency(data.income)}
-  - Monthly Expenses: ${formatCurrency(data.expenses)}
-  - Monthly Net: ${formatCurrency(monthlyNet)}
-  - Savings Rate: ${savingsRate}%
-  - Emergency Fund: ${emergencyFundMonths.toFixed(1)} months of expenses
+    Financial Overview:
+    - Total Balance: ${formatCurrency(data.totalBalance)}
+    - Monthly Income: ${formatCurrency(data.income)}
+    - Monthly Expenses: ${formatCurrency(data.expenses)}
+    - Monthly Net: ${formatCurrency(monthlyNet)}
+    - Savings Rate: ${savingsRate}%
+    - Emergency Fund: ${emergencyFundMonths.toFixed(1)} months of expenses
 
-  ${topCategories.length > 0 ? `
-  Top Spending Categories:
-  ${topCategories.map(([category, amount]) => 
-    `- ${category}: ${formatCurrency(amount)}`
-  ).join('\n')}
-  ` : ''}
+    ${topCategories.length > 0 ? `
+    Top Spending Categories:
+    ${topCategories.map(([category, amount]) => 
+      `- ${category}: ${formatCurrency(amount)}`
+    ).join('\n')}
+    ` : ''}
 
-  ${insights.length > 0 ? `
-  Key Concerns:
-  ${insights.map(insight => `- ${insight}`).join('\n')}
-  ` : ''}
+    ${insights.length > 0 ? `
+    Key Concerns:
+    ${insights.map(insight => `- ${insight}`).join('\n')}
+    ` : ''}
 
-  Please provide 3-4 specific recommendations. Each recommendation should:
-  1. Start with an action verb (e.g., "Create", "Reduce", "Allocate")
-  2. Include specific numbers or percentages
-  3. Focus on practical, actionable steps
-  4. Address the key financial concerns identified
+    Please provide 3-4 specific recommendations. Each recommendation should:
+    1. Start with an action verb (e.g., "Create", "Reduce", "Allocate")
+    2. Include specific numbers or percentages
+    3. Focus on practical, actionable steps
+    4. Address the key financial concerns identified
 
-  Format your response as bullet points starting with "• " or "- ".
-  Example format:
-  • Reduce dining expenses by 30% (from $500 to $350) by cooking meals at home
-  • Create an emergency fund by allocating $300 monthly until reaching $9,000
-  • Increase retirement contributions by 5% to maximize employer match`;
+    Format your response as bullet points starting with "• " or "- ".
+    Example format:
+    • Reduce dining expenses by 30% (from $500 to $350) by cooking meals at home
+    • Create an emergency fund by allocating $300 monthly until reaching $9,000
+    • Increase retirement contributions by 5% to maximize employer match`;
 
-  const response = await openai.chat.completions.create({
-    model: "gpt-3.5-turbo",  // Changed to 3.5-turbo for reliability
-    messages: [
-      {
-        role: "system",
-        content: "You are a financial advisor who provides clear, actionable recommendations. Each recommendation must start with an action verb and include specific numbers or percentages. Focus on practical steps that directly address the client's financial situation."
-      },
-      {
-        role: "user",
-        content: prompt
-      }
-    ],
-    temperature: 0.3,  // Reduced temperature for more consistent output
-    max_tokens: 500,
-  });
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    const adviceText = response.text();
 
-  const adviceText = response.choices[0]?.message?.content?.trim();
-  if (!adviceText) {
-    throw new Error('No advice generated');
-  }
+    if (!adviceText) {
+      throw new Error('No advice generated from Gemini API');
+    }
 
-  // Less strict filtering of advice points
-  const advicePoints = adviceText
-    .split('\n')
-    .map(line => line.trim())
-    .filter(line => line.length > 0)
-    .map(line => {
-      // Clean up the line while preserving the content
-      let cleaned = line;
-      // Remove bullet points if present
-      cleaned = cleaned.replace(/^[•\-\*]\s*/, '');
-      // Ensure first letter is capitalized
-      cleaned = cleaned.charAt(0).toUpperCase() + cleaned.slice(1);
-      return cleaned;
-    })
-    .filter(point => {
-      // Basic validation: ensure it's a substantial piece of advice
-      return point.length >= 10 && /^[A-Z]/.test(point);
-    });
+    // Process advice points
+    const advicePoints = adviceText
+      .split('\n')
+      .map(line => line.trim())
+      .filter(line => line.length > 0)
+      .map(line => {
+        let cleaned = line;
+        cleaned = cleaned.replace(/^[•\-\*]\s*/, '');
+        cleaned = cleaned.charAt(0).toUpperCase() + cleaned.slice(1);
+        return cleaned;
+      })
+      .filter(point => {
+        return point.length >= 10 && /^[A-Z]/.test(point);
+      });
 
-  // If we still don't have any valid points, generate some default advice
-  if (advicePoints.length === 0) {
-    const defaultAdvice = [
-      `Create an emergency fund by saving ${formatCurrency(data.expenses * 0.1)} monthly until you have 3 months of expenses saved`,
-      `Reduce expenses by ${monthlyNet < 0 ? formatCurrency(Math.abs(monthlyNet)) : '10%'} to improve your savings rate`,
-      `Track your spending in ${Object.keys(spendingByCategory).slice(0, 3).join(', ')} categories to identify potential savings`
-    ];
+    // If we still don't have any valid points, generate some default advice
+    if (advicePoints.length === 0) {
+      const defaultAdvice = [
+        `Create an emergency fund by saving ${formatCurrency(data.expenses * 0.1)} monthly until you have 3 months of expenses saved`,
+        `Reduce expenses by ${monthlyNet < 0 ? formatCurrency(Math.abs(monthlyNet)) : '10%'} to improve your savings rate`,
+        `Track your spending in ${Object.keys(spendingByCategory).slice(0, 3).join(', ')} categories to identify potential savings`
+      ];
+      return {
+        advice: defaultAdvice,
+        metrics: {
+          savingsRate,
+          monthlyNet,
+          emergencyFundMonths,
+          topCategories: Object.fromEntries(topCategories),
+          insights
+        }
+      };
+    }
+
     return {
-      advice: defaultAdvice,
+      advice: advicePoints,
       metrics: {
         savingsRate,
         monthlyNet,
@@ -247,18 +239,11 @@ async function handleFinancialAdvice(data: FinancialAdviceRequest) {
         insights
       }
     };
-  }
 
-  return {
-    advice: advicePoints,
-    metrics: {
-      savingsRate,
-      monthlyNet,
-      emergencyFundMonths,
-      topCategories: Object.fromEntries(topCategories),
-      insights
-    }
-  };
+  } catch (error) {
+    console.error('Gemini API Error:', error);
+    throw new Error('Failed to generate financial advice');
+  }
 }
 
 // Main route handler
@@ -270,6 +255,12 @@ export async function POST(request: NextRequest) {
     if (!body.type || body.type === 'community-chat') {
       try {
         const { message } = body as CommunityChatRequest;
+        if (!message?.trim()) {
+          return NextResponse.json(
+            { error: 'Message is required' },
+            { status: 400 }
+          );
+        }
         const reply = await handleCommunityChat(message);
         return NextResponse.json({ reply });
       } catch (error) {
