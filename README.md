@@ -27,7 +27,7 @@ This application is targeted to low income communities who cannot afford to prop
 **...point us to the short clip that tells us about your solution 😄**
 
 ### Link to Demo Presentation 📽
-**...point us to your PPT or Canva slides 😍**
+https://www.canva.com/design/DAGWgETnl4E/OPrzqHQtq0X6Pbl7UPMSMA/edit?utm_content=DAGWgETnl4E&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
 
 ### Team Checklist ✅
 - [x] Team photo
