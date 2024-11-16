@@ -1,9 +1,6 @@
 # MoreLife
 
 ## Challenge Statement(s) Addressed 🎯
-**...include the challenge statement(s) the project worked to address**
-
-Examples:
 * How might we create an innovative software application that leverages artificial intelligence to address a specific challenge or improve the quality of life in your local community?
 * How might we empower low-income communities to improve their health, manage their finances, and foster meaningful connections through an accessible, all-in-one platform?
 
@@ -32,16 +29,16 @@ This application is targeted to low income communities who cannot afford to prop
 **...point us to your PPT or Canva slides 😍**
 
 ### Team Checklist ✅
-- [ ] Team photo
-- [ ] Team Slack channel
-- [ ] Communication established with mentor
-- [ ] Repo creation from this template
-- [ ] Hangar registration
+- [x] Team photo
+- [x] Team Slack channel
+- [x] Communication established with mentor
+- [x] Repo creation from this template
+- [x] Hangar registration
 
 ### Project Checklist 🏁
 - [ ] Presentation complete and linked
 - [ ] Video pitch recorded and linked
-- [ ] Code merged to main branch
+- [x] Code merged to main branch
 
 ### School Name 🏫
 Jackson State University
