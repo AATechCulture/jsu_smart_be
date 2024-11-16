@@ -6,7 +6,7 @@ export async function GET() {
   try {
     // Test welcome email
     const result = await sendEmail({
-      to: "your-email@example.com", // Replace with your email
+      to: "marlvingore.edu@.com", // Replace with your email
       subject: "Test Welcome Email",
       template: WelcomeEmail,
       props: {
