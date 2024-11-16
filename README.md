@@ -15,6 +15,7 @@ This application is targeted to low income communities who cannot afford to prop
 * ReactJS
 * TypeScript
 * PostGres
+* LangChain
 * Neon
 * Vercel
 * PineconeDB
