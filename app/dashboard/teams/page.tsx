@@ -55,17 +55,13 @@ export default async function TeamsPage() {
   return (
     <div className="flex flex-col gap-8">
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold">Teams</h1>
-        <CreateTeamDialog />
+        <h1 className="text-3xl font-bold">Financial Advising</h1>
+        {/* <CreateTeamDialog /> */}
       </div>
+
       <Card>
-        <CardHeader>
-          <CardTitle>Your Teams</CardTitle>
-          <CardDescription>Teams you own or are a member of</CardDescription>
-        </CardHeader>
         <CardContent>
           <Suspense fallback={<TeamListSkeleton />}>
-            <TeamList teams={teams} />
           </Suspense>
         </CardContent>
       </Card>

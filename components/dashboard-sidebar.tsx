@@ -44,7 +44,7 @@ const primaryNavItems = [
     icon: HomeIcon,
   },
   {
-    title: "Teams",
+    title: "Financial Advising",
     href: "/dashboard/teams",
     icon: Users,
   },
