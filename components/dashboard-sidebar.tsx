@@ -39,17 +39,17 @@ import { siteConfig } from "@/config/site";
 
 const primaryNavItems = [
   {
-    title: "Dashboard",
+    title: "AI Health",
     href: "/dashboard",
     icon: HomeIcon,
   },
   {
-    title: "Teams",
+    title: "AI Finance",
     href: "/dashboard/teams",
     icon: Users,
   },
   {
-    title: "Billing",
+    title: "Community",
     href: "/dashboard/billing",
     icon: CreditCard,
   },

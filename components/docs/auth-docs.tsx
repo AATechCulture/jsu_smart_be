@@ -13,7 +13,7 @@ export function AuthDocs() {
         <CardHeader>
           <CardTitle>Authentication Setup</CardTitle>
           <CardDescription>
-            NextLaunch uses NextAuth.js for authentication with support for
+            MoreLIfe uses NextAuth.js for authentication with support for
             multiple providers
           </CardDescription>
         </CardHeader>
