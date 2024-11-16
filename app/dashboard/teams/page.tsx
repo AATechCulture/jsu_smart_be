@@ -8,7 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { CreateTeamDialog } from "@/components/teams/create-team-dialog";
+import { FinanceForm } from "@/components/ui/financing";
 import { TeamList, TeamListSkeleton } from "@/components/teams/team-list";
 import { Suspense } from "react";
 import { Team } from "@prisma/client";
@@ -56,13 +56,12 @@ export default async function TeamsPage() {
     <div className="flex flex-col gap-8">
       <div className="flex justify-between items-center">
         <h1 className="text-3xl font-bold">Financial Advising</h1>
-        {/* <CreateTeamDialog /> */}
+        {/* Render User input form */}
       </div>
 
       <Card>
         <CardContent>
-          <Suspense fallback={<TeamListSkeleton />}>
-          </Suspense>
+          <FinanceForm/>
         </CardContent>
       </Card>
     </div>
