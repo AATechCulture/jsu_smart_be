@@ -24,7 +24,7 @@ This application is targeted to low income communities who cannot afford to prop
 
 
 ### Link to Video Pitch 📹
-**...point us to the short clip that tells us about your solution 😄**
+https://www.loom.com/share/6a2f5b8d61204bf7acf73c923802e62d?sid=238b7f3c-57dc-4fa5-973e-0c72e618a692
 
 ### Link to Demo Presentation 📽
 https://www.canva.com/design/DAGWgETnl4E/OPrzqHQtq0X6Pbl7UPMSMA/edit?utm_content=DAGWgETnl4E&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
