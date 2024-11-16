@@ -1,5 +1,5 @@
 export const siteConfig = {
-  name: "NextLaunch",
+  name: "MoreLife",
   description: "",
   url: process.env.NEXT_PUBLIC_APP_URL,
   ogImage: "https://your-og-image.png",
@@ -9,7 +9,7 @@ export const siteConfig = {
   },
   emails: {
     from: {
-      name: "NextLaunch",
+      name: "MoreLife",
       email: "notifications@onboarding.dev", // Must be verified in Resend
     },
   },

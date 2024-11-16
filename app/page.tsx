@@ -229,7 +229,7 @@ export default function HomePage() {
                   <div className="mt-8">
                     <PayButton
                       priceId={plan.priceId}
-                      amount={plan.price}
+                     //amount={plan.price}
                       showAmount={false}
                       className={`w-full ${
                         plan.popular
@@ -247,3 +247,5 @@ export default function HomePage() {
     </div>
   );
 }
+
+
