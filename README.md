@@ -17,6 +17,10 @@ This application is targeted to low income communities who cannot afford to prop
 * PostGres
 * LangChain
 * Neon
+* AWS
+* Gemini
+* StripeAPI
+* ReasonAPI
 * Vercel
 * PineconeDB
 * Prisma
@@ -37,8 +41,8 @@ https://www.canva.com/design/DAGWgETnl4E/OPrzqHQtq0X6Pbl7UPMSMA/edit?utm_content
 - [x] Hangar registration
 
 ### Project Checklist 🏁
-- [ ] Presentation complete and linked
-- [ ] Video pitch recorded and linked
+- [x] Presentation complete and linked
+- [x] Video pitch recorded and linked
 - [x] Code merged to main branch
 
 ### School Name 🏫
